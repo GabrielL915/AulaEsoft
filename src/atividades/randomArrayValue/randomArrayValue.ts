@@ -1,6 +1,8 @@
 // Dado um array de objetos, vamos retornar em um novo array
 // Apenas 3 elementos e seus valores deste array, porém, de maneira aleatória
+import { get } from "http";
 import { ErrorMessages } from "./errorMessagem.enum";
+import { ArrayType } from "./types/array.types";
 
 const produtos1: any = [
   { nome: "Caneta", qtde: 10, preco: 7.99 },
@@ -14,59 +16,59 @@ const produtos1: any = [
   { nome: "Fone", qtde: 5, preco: 198.99 },
   { nome: "Mochila", qtde: 15, preco: 150.99 },
 ];
-/* 
-let produtosSortidos: any = []
+export class randomArrayValues {
+  private _array: Array<ArrayType> = [];
+  private _indexNumber: number;
 
-while(produtosSortidos.length < 3) {
-    let randomNumber = Math.floor(Math.random() * produtos1.length)
-    // esse includes tá verificando se o valor já não está presente no array, por exemplo o valor:
-    //{ nome: 'Impressora', qtde: 0, preco: 649.50 },
-    if(!produtosSortidos.includes(produtos1[randomNumber])) {
-        produtosSortidos.push(produtos1[randomNumber])
+  public setArray(array: ArrayType[]): void {
+    this._array = array;
+  }
+
+  public setIndexNumber(indexNumbers: number): void {
+    this._indexNumber = indexNumbers;
+  }
+
+  public getRandomObjects(): Array<ArrayType> | ErrorMessages {
+    let result: Array<ArrayType> = [];
+
+    const coditions: any = {
+      ArrayZero: (array: Array<ArrayType>, indexNumbers: number) => {
+        if (array.length === 0) return ErrorMessages.INVALID_ARRAY;
+      },
+      RangeInvalido: (array: Array<ArrayType>, indexNumbers: number) => {
+        if (indexNumbers > array.length)
+          return ErrorMessages.INVALID_NUMBER_RANGE;
+      },
+      NumberInvalido: (array: Array<ArrayType>, indexNumbers: number) => {
+        if (indexNumbers < 1) return ErrorMessages.INVALID_NUMBER;
+      },
+    };
+
+    if (
+      coditions.ArrayZero(this._array, this._indexNumber) ||
+      coditions.RangeInvalido(this._array, this._indexNumber) ||
+      coditions.NumberInvalido(this._array, this._indexNumber)
+    ) {
+      return (
+        coditions.ArrayZero(this._array, this._indexNumber) ||
+        coditions.RangeInvalido(this._array, this._indexNumber) ||
+        coditions.NumberInvalido(this._array, this._indexNumber)
+      );
     }
-}
- */
-//console.log(produtosSortidos)
 
-export function getRandomObjects(array, indexNumbers) {
-  let result: any = [];
-
-  return array.length === 0
-    ? ErrorMessages.INVALID_ARRAY
-    : indexNumbers > array.length
-    ? ErrorMessages.INVALID_NUMBER_RANGE
-    : indexNumbers < 1
-    ? ErrorMessages.INVALID_NUMBER
-    : (() => {
-        while (result.length < indexNumbers) {
-            let randomIndex = Math.floor(Math.random() * array.length);
-            let randomObject: any = array[randomIndex];
-            if (!result.includes(randomObject)) {
-              result.push(randomObject);
-            }
-          }
-          return result;
-    })(); 
-}
-
-/* 
-function chooseRandomProducts(productList, itensQuantity) {
-    let randomProducts: any = []
-    
-    while(randomProducts.length < itensQuantity) {
-        let randomNumber = Math.floor(Math.random() * productList.length)
-        let checkObjectValue = false
-        for (let i = 0; i < randomProducts.length; i++) {
-            // validando se o numero aleatório está dentro do array auxiliar
-            if(randomProducts[i] === productList[randomNumber]) {
-                checkObjectValue = true
-            }     
-        }
-        if(!checkObjectValue) randomProducts.push(productList[randomNumber])
+    while (result.length < this._indexNumber) {
+      let randomIndex = Math.floor(Math.random() * this._array.length);
+      let randomObject: any = this._array[randomIndex];
+      if (!result.includes(randomObject)) {
+        result.push(randomObject);
+      }
     }
-    return randomProducts
+    return result;
+  }
 }
 
-console.log(chooseRandomProducts(produtos1, 4)) */
+const random = new randomArrayValues();
+random.setArray([]);
+random.setIndexNumber(5);
 
-console.log(getRandomObjects(produtos1, 3));
+console.log(random.getRandomObjects());

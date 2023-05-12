@@ -1,39 +1,36 @@
-import { describe, expect, test } from "@jest/globals";
-import { getRandomObjects } from "../atividades/randomArrayValue/randomArrayValue";
 import { ErrorMessages } from "../atividades/randomArrayValue/errorMessagem.enum";
+import { ArrayType } from "../atividades/randomArrayValue/types/array.types";
+import { randomArrayValues } from "../atividades/randomArrayValue/randomArrayValue";
+
+const array: Array<ArrayType> = [
+  { nome: "Caneta", qtde: 10, preco: 7.99 },
+  { nome: "Impressora", qtde: 0, preco: 649.5 },
+  { nome: "Caderno", qtde: 4, preco: 27.1 },
+];
 
 describe("Random Array Value", () => {
   test("retornar erro se index for maior que o numero do array", () => {
-    const array = [
-      { name: "John", age: 25 },
-      { name: "Jane", age: 30 },
-      { name: "Bob", age: 40 },
-      { name: "Alice", age: 20 },
-    ];
     const indexNumbers = 10;
-    const result = getRandomObjects(array, indexNumbers);
-    expect(result).toBe(ErrorMessages.INVALID_NUMBER_RANGE);
+    const result = new randomArrayValues();
+    result.setArray(array);
+    result.setIndexNumber(indexNumbers);
+    expect(result.getRandomObjects()).toBe(ErrorMessages.INVALID_NUMBER_RANGE);
   });
-
 
   test("retornar erro se index for menor que 1", () => {
-    const array = [
-      { name: "John", age: 25 },
-      { name: "Jane", age: 30 },
-      { name: "Bob", age: 40 },
-      { name: "Alice", age: 20 },
-    ];
     const indexNumbers = 0;
-    const result = getRandomObjects(array, indexNumbers);
-    expect(result).toBe(ErrorMessages.INVALID_NUMBER);
+    const result = new randomArrayValues();
+    result.setArray(array);
+    result.setIndexNumber(indexNumbers);
+    expect(result.getRandomObjects()).toBe(ErrorMessages.INVALID_NUMBER);
   });
 
-    test("retornar erro se array for vazio", () => {
+  test("retornar erro se array for vazio", () => {
     const array = [];
     const indexNumbers = 2;
-    const result = getRandomObjects(array, indexNumbers);
-    expect(result).toBe(ErrorMessages.INVALID_ARRAY);
-    });
-
-    
+    const result = new randomArrayValues();
+    result.setArray(array);
+    result.setIndexNumber(indexNumbers);
+    expect(result.getRandomObjects()).toBe(ErrorMessages.INVALID_ARRAY);
+  });
 });
